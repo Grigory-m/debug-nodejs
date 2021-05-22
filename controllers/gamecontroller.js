@@ -1,5 +1,7 @@
-var router = require('express').Router();
-var Game = require('../models/game');
+import Game from '../models/game.js';
+import express from 'express';
+
+const router = express.Router();
 
 router.get('/all', (req, res) => {
     Game.findAll({ where: { owner_id: req.user.id } })
@@ -13,8 +15,8 @@ router.get('/all', (req, res) => {
             res.status(500).json({
                 message: "Data not found"
             })
-        })
-})
+        });
+});
 
 router.get('/:id', (req, res) => {
     Game.findOne({ where: { id: req.params.id, owner_id: req.user.id } })
@@ -27,8 +29,8 @@ router.get('/:id', (req, res) => {
             res.status(500).json({
                 message: "Data not found."
             })
-        })
-})
+        });
+});
 
 router.post('/create', (req, res) => {
     Game.create({
@@ -47,8 +49,8 @@ router.post('/create', (req, res) => {
     })
     .catch((err) => {
         res.status(500).send(err.message)
-    })
-})
+    });
+});
 
 router.put('/update/:id', (req, res) => {
     Game.update({
@@ -74,8 +76,8 @@ router.put('/update/:id', (req, res) => {
             res.status(500).json({
                 message: err.message
             })
-        })
-})
+        });
+});
 
 router.delete('/remove/:id', (req, res) => {
     Game.destroy({
@@ -93,8 +95,8 @@ router.delete('/remove/:id', (req, res) => {
     .catch((err) => {
         res.status(500).json({
             error: err.message
-        })
-    })
-})
+        });
+    });
+});
 
-module.exports = router;
+export default router;

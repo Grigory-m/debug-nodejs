@@ -1,11 +1,11 @@
-const jwt = require('jsonwebtoken');
-var User = require('../models/user');
+import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
 
-module.exports = function (req, res, next) {
+export default (req, res, next) => {
     if (req.method == 'OPTIONS') {
         next();   // allowing options as a method for request
     } else {
-        var sessionToken = req.session.authorization;
+        const sessionToken = req.session.authorization;
         console.log(sessionToken);
         if (!sessionToken) return res.status(403).send({ auth: false, message: "No token provided." });
         else {
@@ -26,4 +26,4 @@ module.exports = function (req, res, next) {
             });
         }
     }
-}
+};

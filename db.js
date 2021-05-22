@@ -1,10 +1,10 @@
-const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
                                 //database username   password
 const sequelize = new Sequelize('gamedb', 'Grigory-m', 'debug', {
     host: 'localhost',
     port: 5433,
     dialect: 'postgres'
-})
+});
 
 sequelize.authenticate()
     .then(() => {
@@ -14,4 +14,4 @@ sequelize.authenticate()
         console.log(`Error: ${err}`);
     })
     
-module.exports = sequelize;
+export default sequelize;

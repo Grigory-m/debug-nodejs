@@ -1,8 +1,9 @@
-var router = require('express').Router();
-var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
+import express from 'express';
 
-var User = require('../models/user');
+const router = express.Router();
 
 router.post('/signup', (req, res) => {
     User.create({
@@ -20,15 +21,15 @@ router.post('/signup', (req, res) => {
         })
         .catch((err) => {
             res.status(500).send(err.message);
-        })         
-})
+        });         
+});
 
 router.post('/signin', (req, res) => {
     User.findOne({ where: { username: req.body.user.username } }).then(user => {
         if (user) {
-            bcrypt.compare(req.body.user.password, user.passwordHash, function (err, matches) {
+            bcrypt.compare(req.body.user.password, user.passwordHash, (err, matches) => {
                 if (matches) {
-                    var token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', { expiresIn: 60 * 60 * 24 });
+                    let token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', { expiresIn: 60 * 60 * 24 });
                     req.session.authorization = token;
                     res.json({
                         user: user,
@@ -36,14 +37,14 @@ router.post('/signin', (req, res) => {
                         sessionToken: token
                     });
                 } else {
-                    res.status(502).send({ error: "Passwords do not match." })
+                    res.status(502).send({ error: "Passwords do not match." });
                 }
             });
         } else {
-            res.status(403).send({ error: "User not found." })
+            res.status(403).send({ error: "User not found." });
         }
 
-    })
-})
+    });
+});
 
-module.exports = router;
+export default router;
