@@ -1,5 +1,8 @@
-function(sequelize, DataTypes) {
-    return sequelize.define('game', {
+import db from '../db.js';
+import sequelize from 'sequelize';
+const { DataTypes } = sequelize;
+
+export default db.define('game', {
         title: {
             type: DataTypes.STRING(25),
             allowNull: false,
@@ -34,5 +37,4 @@ function(sequelize, DataTypes) {
             defaultValue: false,
             allowNull: false
         }
-    })
-}
+    });
